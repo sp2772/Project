@@ -37,7 +37,7 @@ while True:
             if t_date==c_date and t_time==c_time:
                 print("Match Found")
                 print(t[2])
-                send_notification("Hello", "This is a notification for your event!!")
+                send_notification("Hello", t[2]+" "+t[3])
                 engine = pyttsx3.init()
                 engine.say(t[2])
                 engine.runAndWait()
