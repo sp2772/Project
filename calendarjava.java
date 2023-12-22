@@ -15,10 +15,69 @@ class Calendar
 {
     JFrame f;
     JPanel p1,p2;
-    JLabel l1;
-    JButton b[];
+    JLabel l1,l2;
+    JButton b[], val;
     JComboBox cb1;
+    JTextField t1;
     
+    public static boolean isLeapYear(int year) {
+
+        return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
+    }
+
+    public static int getmonthint(String month)
+    {
+    if(month.equals("January"))
+    {
+        return 0;
+    }
+    else if(month.equals("February"))
+    {
+        return 1;
+    }
+    else if(month.equals("March"))
+    {
+        return 2;
+    }
+    else if(month.equals("April"))
+    {
+        return 3;
+    }
+    else if(month.equals("May"))
+    {
+        return 4;
+    }
+    else if(month.equals("June"))
+    {
+        return 5;
+    }
+    else if(month.equals("July"))
+    {
+        return 6;
+    }
+    else if(month.equals("August"))
+    {
+        return 7;
+    }
+    else if(month.equals("September"))
+    {
+        return 8;
+    }
+    else if(month.equals("October"))
+    {
+        return 9;
+    }
+    else if(month.equals("November"))
+    {
+        return 10;
+    }
+    else if(month.equals("December"))
+    {
+        return 11;
+    }
+    return -1;
+    }
+
     public static String getmonth(String month)
     {
     if(month.equals("January"))
@@ -76,6 +135,30 @@ class Calendar
 
     Calendar() throws IOException
     {
+        class Mon
+            {
+                ArrayList<Integer> day= new ArrayList<Integer>();
+            }
+            Mon[] mon= new Mon[12];
+            for(int j=0;j<12;j++)
+            {
+                mon[j]= new Mon();
+            }
+         class storeyear
+            {
+                String year;
+                storeyear()
+                {
+                    
+                }
+                void addyear(String year)
+                {
+                    this.year=year;
+                }
+            }
+        storeyear storey= new storeyear();
+
+
         f= new JFrame("Calendar");
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,6 +169,12 @@ class Calendar
         
         p1.setBounds(0,0,1000,100);
         f.add(p1);
+        l2= new JLabel("Year");
+        p1.add(l2);
+        t1= new JTextField(4);
+        p1.add(t1);
+        val = new JButton("show");
+        p1.add(val);
 
         l1= new JLabel("Month");
         p1.add(l1);
@@ -99,6 +188,7 @@ class Calendar
         for(int i=1; i<32;i++)
         {
             b[i]= new JButton(String.valueOf(i));
+            b[i].setBackground(Color.white);
             b[i].setSize(100, 71);
             p2.add(b[i]);        
         }
@@ -106,11 +196,22 @@ class Calendar
         cb1 = new JComboBox(new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"});
         cb1.setBounds(100,100,100,100);
         p1.add(cb1);
+
+        val.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e)
+            {
+                String s= t1.getText();
+                storey.addyear(s);
+                cb1.setSelectedIndex(cb1.getSelectedIndex());
+                
+            }
+        });
  
         cb1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e)
             {
                 String s= (String)cb1.getSelectedItem();
+
                 if(s.equals("January"))
                 {
                     for(int i=1;i<32;i++)
@@ -118,21 +219,50 @@ class Calendar
                         b[i].setText(String.valueOf(i));
                         if(i==31 || i==30)                        {
                             b[i].setVisible(true);
+                            
                         }
+                        b[i].setBackground(Color.white);
                     
                     }
-                    System.out.println("inside");
+
+
+                    for(Integer buttno: mon[0].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
+                    
                 }
                 else if(s.equals("February"))
                 {
                     for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
+                        if(isLeapYear(Integer.valueOf(t1.getText())))
+                        {
                         if(i==30 || i==31)
                         {
                             b[i].setVisible(false);
+                            
                         }
-                        System.out.println("inside");
+                        if(i==29)
+                        {
+                            b[i].setVisible(true);
+                        }
+                        }
+                        else
+                        {
+                            if(i==29 || i==30 || i==31)
+                        {
+                            b[i].setVisible(false);
+                            
+                        }
+                        }
+                        b[i].setBackground(Color.white);
+                        
+                    }
+                    for(Integer buttno: mon[1].day)
+                    {
+                        b[buttno].setBackground(Color.red);
                     }
                 }
                 else if(s.equals("March"))
@@ -140,11 +270,17 @@ class Calendar
                   for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
-                        if(i==31 || i==30)                        {
+                        if(i==31 || i==30 || i==29)                        {
                             b[i].setVisible(true);
+                            
                         }
+                        b[i].setBackground(Color.white);
                                               
-                    }  
+                    } 
+                   for(Integer buttno: mon[2].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    } 
                 }
                 else if(s.equals("April"))
                 {
@@ -155,24 +291,33 @@ class Calendar
                         {
                             b[i].setVisible(false);
                         }
-                        if(i==30)
+                        if(i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
+                        b[i].setBackground(Color.white);
                        
                     }  
+                    for(Integer buttno: mon[3].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("May"))
                 {
                     for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
-                        if(i==31 || i==30)
+                        if(i==31 || i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
+                        b[i].setBackground(Color.white);
                     } 
+                    for(Integer buttno: mon[4].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("June"))
                 {
@@ -183,37 +328,53 @@ class Calendar
                         {
                             b[i].setVisible(false);
                         }
-                        if(i==30)
+                        if(i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
+                        {
+                            b[i].setVisible(true);
+                        }
+                        b[i].setBackground(Color.white);
                     } 
+                    for(Integer buttno: mon[5].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("July"))
                 {
                     for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
-                         if(i==31 || i==30)
+                         if(i==31 || i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
-                    } 
+                        b[i].setBackground(Color.white);
+                    }
+                    for(Integer buttno: mon[6].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
+         
                 }
                 else if(s.equals("August"))
                 {
                     for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
-                         if(i==31 || i==30)
+                         if(i==31 || i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                        
+                        b[i].setBackground(Color.white); 
                        
                     } 
+                    for(Integer buttno: mon[7].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("September"))
                 {
@@ -224,24 +385,32 @@ class Calendar
                         {
                             b[i].setVisible(false);
                         }
-                        if(i==30)
+                        if(i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
+                        b[i].setBackground(Color.white);
                     } 
+                    for(Integer buttno: mon[8].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("October"))
                 {
                     for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
-                         if(i==31 || i==30)
+                         if(i==31 || i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
+                        b[i].setBackground(Color.white);
                     } 
+                    for(Integer buttno: mon[9].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("November"))
                 {
@@ -252,27 +421,34 @@ class Calendar
                         {
                             b[i].setVisible(false);
                         }
-                        if(i==30)
+                        if(i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
+                        b[i].setBackground(Color.white);
                     } 
+                    for(Integer buttno: mon[10].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
                 else if(s.equals("December"))
                 {
                     for(int i=1;i<=31;i++)
                     {
                         b[i].setText(String.valueOf(i));
-                         if(i==31 || i==30)
+                         if(i==31 || i==30 || i==29)
                         {
                             b[i].setVisible(true);
                         }
-                       
+                        b[i].setBackground(Color.white);
                     } 
+                    for(Integer buttno: mon[11].day)
+                    {
+                        b[buttno].setBackground(Color.red);
+                    }
                 }
-                
-                
+   
 
             }       
         });
@@ -287,8 +463,14 @@ class Calendar
                             this.i=i;
                         }
                     }
+
+            
             storei store= new storei(i);
-            System.out.println("inside someone");
+            
+           
+            
+            
+            
             b[i].addActionListener(new ActionListener(){
                 
                 public void actionPerformed(ActionEvent e)
@@ -320,8 +502,11 @@ class Calendar
                     b1.addActionListener(new ActionListener(){
                         public void actionPerformed(ActionEvent e) 
                         {
-                            String s2= (String)cb1.getSelectedItem();
                             
+
+                            String s2= (String)cb1.getSelectedItem();
+                            mon[getmonthint(s2)].day.add(store.i);
+                            b[store.i].setBackground(Color.red);
                             String ev= t1.getText();
                             String des= t2.getText();
                             String hr= (String)cbh.getSelectedItem();
@@ -344,12 +529,12 @@ class Calendar
                                 if(!f1.exists()) {
                                     f1.createNewFile();
                                 }// 2024-01-01#13:34#event#description&
-                                String data ="2023-"+getmonth(s2)+"-"+b[store.i].getText()+"#"+hr+":"+min+"#"+ev+"#"+des+"&";
+                                String data =storey.year+"-"+getmonth(s2)+"-"+b[store.i].getText()+"#"+hr+":"+min+"#"+ev+"#"+des+"&";
                                 FileWriter fileWritter = new FileWriter(f1.getName(),true);
                                 BufferedWriter bw = new BufferedWriter(fileWritter);
                                 bw.write(data);
                                 bw.close();
-                                System.out.println("Done");
+                               
                             }
                             catch(IOException e1)
                             {
